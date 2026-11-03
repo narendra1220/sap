@@ -1,0 +1,813 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>ABAP Interview Prep</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,800&family=Source+Sans+3:ital,wght@0,400;0,600;0,700;1,400&family=JetBrains+Mono:wght@400;600&display=swap">
+<style>
+/* Layout: sticky study-path rail on the left, one long readable column of modules on the right */
+:root{
+  --bg:#F4F6FB; --surface:#FFFFFF; --ink:#141C33; --muted:#56627F; --line:#DCE1EE;
+  --accent:#0B57D0; --accent-soft:#E3ECFC; --mark:#B7791F; --mark-soft:#FBF1DE;
+  --l1:#1E7A4F; --l1-soft:#E2F3EA; --l2:#0B57D0; --l2-soft:#E3ECFC; --l3:#7A3DB8; --l3-soft:#F0E7FA;
+  --code-bg:#0F172A; --code-ink:#E2E8F0; --code-com:#8B9BB8; --code-kw:#7FB2FF;
+  --f-display:"Bricolage Grotesque", "Segoe UI", system-ui, sans-serif;
+  --f-body:"Source Sans 3", "Segoe UI", system-ui, sans-serif;
+  --f-mono:"JetBrains Mono", ui-monospace, Consolas, monospace;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --bg:#0E1322; --surface:#161D31; --ink:#E6EAF5; --muted:#9BA6C2; --line:#28324F;
+  --accent:#7AA7FF; --accent-soft:#1C2A4A; --mark:#F0B952; --mark-soft:#33280F;
+  --l1:#5FD39B; --l1-soft:#123227; --l2:#7AA7FF; --l2-soft:#1C2A4A; --l3:#C49BF2; --l3-soft:#2D1F42;
+  --code-bg:#0A0F1C; --code-ink:#E2E8F0; --code-com:#7F8CA8; --code-kw:#8DBBFF; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#0E1322; --surface:#161D31; --ink:#E6EAF5; --muted:#9BA6C2; --line:#28324F;
+  --accent:#7AA7FF; --accent-soft:#1C2A4A; --mark:#F0B952; --mark-soft:#33280F;
+  --l1:#5FD39B; --l1-soft:#123227; --l2:#7AA7FF; --l2-soft:#1C2A4A; --l3:#C49BF2; --l3-soft:#2D1F42;
+  --code-bg:#0A0F1C; --code-ink:#E2E8F0; --code-com:#7F8CA8; --code-kw:#8DBBFF; color-scheme:dark}
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--ink);font-family:var(--f-body);font-size:16.5px;line-height:1.6}
+a{color:var(--accent)}
+:focus-visible{outline:2px solid var(--accent);outline-offset:2px;border-radius:4px}
+.wrap{max-width:1180px;margin:0 auto;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:28px 64px}
+.top{display:flex;flex-direction:column;gap:14px;padding-bottom:22px;border-bottom:1px solid var(--line);margin-bottom:26px}
+.eyebrow{font-family:var(--f-mono);font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:var(--mark)}
+h1{font-family:var(--f-display);font-weight:800;font-size:clamp(30px,5vw,46px);line-height:1.05;margin:0;text-wrap:balance}
+.lede{color:var(--muted);max-width:68ch;margin:0}
+.job{display:flex;flex-wrap:wrap;gap:8px}
+.chip{font-size:13px;padding:3px 10px;border-radius:999px;background:var(--surface);border:1px solid var(--line);color:var(--muted)}
+.chip b{color:var(--ink);font-weight:600}
+.layout{display:grid;grid-template-columns:260px minmax(0,1fr);gap:36px;align-items:start}
+nav.rail{position:sticky;top:calc(env(safe-area-inset-top,0px) + 16px);max-height:calc(100vh - 32px);overflow:auto;padding-right:4px}
+.rail h2{font-family:var(--f-mono);font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);margin:0 0 8px;font-weight:600}
+.progress{background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:12px 14px;margin-bottom:16px}
+.bar{height:8px;background:var(--line);border-radius:99px;overflow:hidden;margin-top:6px}
+.bar span{display:block;height:100%;width:0;background:var(--l1);transition:width .3s}
+.ptext{font-size:14px;color:var(--muted)}
+.ptext b{color:var(--ink);font-variant-numeric:tabular-nums}
+.rail ol{list-style:none;margin:0 0 18px;padding:0;display:flex;flex-direction:column;gap:1px}
+.rail li a{display:flex;align-items:center;gap:8px;text-decoration:none;color:var(--ink);font-size:14.5px;padding:5px 8px;border-radius:6px}
+.rail li a:hover{background:var(--accent-soft)}
+.rail .dot{width:8px;height:8px;border-radius:50%;flex:none;border:1.5px solid var(--muted)}
+.rail li.done .dot{background:var(--l1);border-color:var(--l1)}
+.rail li.done a{color:var(--muted)}
+.rail .grp{font-size:11.5px;font-family:var(--f-mono);color:var(--muted);margin:10px 8px 2px;letter-spacing:.05em;text-transform:uppercase}
+.navtoggle{display:none}
+main{min-width:0;display:flex;flex-direction:column;gap:22px}
+.tools{display:flex;flex-wrap:wrap;gap:10px;align-items:center;position:sticky;top:env(safe-area-inset-top,0px);z-index:5;background:var(--bg);padding-block:10px;border-bottom:1px solid var(--line)}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:10;background:var(--bg)}
+.tools input{flex:1 1 240px;min-width:0;font:inherit;font-size:15px;padding:9px 12px;border-radius:8px;border:1px solid var(--line);background:var(--surface);color:var(--ink)}
+button{font:inherit;font-size:14px;padding:8px 12px;border-radius:8px;border:1px solid var(--line);background:var(--surface);color:var(--ink);cursor:pointer}
+button:hover{border-color:var(--accent);color:var(--accent)}
+.count{font-size:13px;color:var(--muted)}
+section.card{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:22px 24px;scroll-margin-top:70px}
+.mhead{display:flex;flex-wrap:wrap;align-items:center;gap:10px 14px;margin-bottom:6px}
+.num{font-family:var(--f-mono);font-size:13px;color:var(--muted)}
+h2.mt{font-family:var(--f-display);font-weight:600;font-size:clamp(21px,2.6vw,26px);line-height:1.2;margin:0;flex:1 1 280px;text-wrap:balance}
+.lvl{font-family:var(--f-mono);font-size:11.5px;letter-spacing:.06em;text-transform:uppercase;padding:2px 9px;border-radius:999px;font-weight:600}
+.l1{color:var(--l1);background:var(--l1-soft)} .l2{color:var(--l2);background:var(--l2-soft)} .l3{color:var(--l3);background:var(--l3-soft)}
+label.done{display:flex;align-items:center;gap:6px;font-size:14px;color:var(--muted);cursor:pointer;user-select:none}
+label.done input{width:17px;height:17px;accent-color:var(--l1)}
+.jd{font-size:14.5px;background:var(--mark-soft);color:var(--ink);border-radius:8px;padding:8px 12px;margin:10px 0 14px}
+.jd b{color:var(--mark)}
+h3{font-family:var(--f-display);font-weight:600;font-size:17px;margin:18px 0 8px}
+.card ul{margin:0;padding-left:20px;display:flex;flex-direction:column;gap:5px}
+.card p{margin:0 0 10px;max-width:72ch}
+code{font-family:var(--f-mono);font-size:.88em;background:var(--accent-soft);padding:1px 5px;border-radius:4px}
+pre{background:var(--code-bg);color:var(--code-ink);border-radius:10px;padding:14px 16px;overflow-x:auto;font-family:var(--f-mono);font-size:13.5px;line-height:1.55;margin:12px 0}
+pre code{background:none;padding:0;font-size:inherit;color:inherit}
+pre .c{color:var(--code-com);font-style:italic}
+.tw{overflow-x:auto;margin:10px 0}
+table{border-collapse:collapse;font-size:14.5px;min-width:520px;width:100%}
+th,td{text-align:left;padding:7px 10px;border-bottom:1px solid var(--line);vertical-align:top}
+th{font-family:var(--f-mono);font-size:12px;letter-spacing:.05em;text-transform:uppercase;color:var(--muted);font-weight:600}
+td code{white-space:nowrap}
+details.qa{border:1px solid var(--line);border-radius:8px;margin:7px 0;background:var(--bg)}
+details.qa summary{cursor:pointer;padding:10px 14px;font-weight:600;list-style:none;display:flex;gap:10px}
+details.qa summary::-webkit-details-marker{display:none}
+details.qa summary::before{content:"Q";font-family:var(--f-mono);font-size:12px;color:var(--accent);background:var(--accent-soft);border-radius:4px;padding:1px 6px;height:fit-content;margin-top:2px;flex:none}
+details.qa[open] summary{border-bottom:1px dashed var(--line)}
+details.qa .a{padding:10px 14px 12px 44px;font-size:15.5px}
+details.qa .a p:last-child,details.qa .a ul:last-child{margin-bottom:0}
+.tip{border-left:3px solid var(--accent);padding:4px 0 4px 12px;color:var(--muted);font-size:15px;margin:12px 0}
+.plan{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:12px;margin-top:10px}
+.week{border:1px solid var(--line);border-radius:10px;padding:12px 14px;background:var(--bg)}
+.week h4{margin:0 0 6px;font-family:var(--f-display);font-weight:600;font-size:16px}
+.week .w{font-family:var(--f-mono);font-size:12px;color:var(--mark);text-transform:uppercase;letter-spacing:.06em}
+.week ul{font-size:14.5px}
+.hide{display:none!important}
+footer{color:var(--muted);font-size:13.5px;margin-top:10px}
+@media (max-width:900px){
+  .layout{grid-template-columns:minmax(0,1fr);gap:16px}
+  nav.rail{position:static;max-height:none;overflow:visible}
+  .navtoggle{display:block;width:100%;text-align:left}
+  nav.rail .navbody{display:none} nav.rail.open .navbody{display:block;margin-top:12px}
+  section.card{padding:18px 16px}
+  details.qa .a{padding-left:16px}
+}
+@media (prefers-reduced-motion:reduce){*{transition:none!important;scroll-behavior:auto!important}}
+html{scroll-behavior:smooth}
+</style>
+</head>
+<body>
+
+<div class="wrap">
+<header class="top">
+  <span class="eyebrow">Prep track for Apoorva Nalam</span>
+  <h1>SAP ABAP Interview Prep</h1>
+  <p class="lede">Built for the Accenture Application Developer role, job no. ATCI-5001506-S1865981. It starts at SAP basics and builds up to ABAP on HANA, RAP and performance tuning. Every module has the concepts to learn, code to recognise and the questions interviewers actually ask, with short model answers.</p>
+  <div class="job">
+    <span class="chip"><b>Role</b> Packaged Application Development Analyst</span>
+    <span class="chip"><b>Must have</b> SAP ABAP Development</span>
+    <span class="chip"><b>Good to have</b> ABAP for HANA</span>
+    <span class="chip"><b>Experience</b> 2–5 years</span>
+    <span class="chip"><b>Location</b> Hyderabad</span>
+  </div>
+</header>
+
+<div class="layout">
+<nav class="rail" id="rail" aria-label="Study path">
+  <button class="navtoggle" id="navtoggle" aria-expanded="false">Study path ▾</button>
+  <div class="navbody">
+  <div class="progress">
+    <div class="ptext"><b id="pdone">0</b> of <b id="ptotal">0</b> modules done</div>
+    <div class="bar"><span id="pbar"></span></div>
+  </div>
+  <h2>Study path</h2>
+  <ol id="navlist">
+    <li class="grp">Start</li>
+    <li><a href="#plan"><span class="dot"></span>4-week plan</a></li>
+    <li class="grp">Basics</li>
+    <li data-for="arch"><a href="#arch"><span class="dot"></span>1. SAP system basics</a></li>
+    <li data-for="ddic"><a href="#ddic"><span class="dot"></span>2. ABAP Dictionary</a></li>
+    <li data-for="lang"><a href="#lang"><span class="dot"></span>3. ABAP language core</a></li>
+    <li data-for="itab"><a href="#itab"><span class="dot"></span>4. Internal tables</a></li>
+    <li data-for="sql"><a href="#sql"><span class="dot"></span>5. Open SQL</a></li>
+    <li data-for="modz"><a href="#modz"><span class="dot"></span>6. Modularization</a></li>
+    <li class="grp">Core</li>
+    <li data-for="rep"><a href="#rep"><span class="dot"></span>7. Reports and ALV</a></li>
+    <li data-for="oop"><a href="#oop"><span class="dot"></span>8. OOP ABAP</a></li>
+    <li data-for="forms"><a href="#forms"><span class="dot"></span>9. Forms</a></li>
+    <li data-for="enh"><a href="#enh"><span class="dot"></span>10. Enhancements</a></li>
+    <li data-for="mig"><a href="#mig"><span class="dot"></span>11. BDC and data migration</a></li>
+    <li data-for="luw"><a href="#luw"><span class="dot"></span>12. LUW, locks, updates</a></li>
+    <li data-for="intg"><a href="#intg"><span class="dot"></span>13. RFC, BAPI, IDoc</a></li>
+    <li data-for="odata"><a href="#odata"><span class="dot"></span>14. OData and Gateway</a></li>
+    <li data-for="wf"><a href="#wf"><span class="dot"></span>15. SAP Workflow</a></li>
+    <li class="grp">Advanced</li>
+    <li data-for="hana"><a href="#hana"><span class="dot"></span>16. ABAP on HANA</a></li>
+    <li data-for="rap"><a href="#rap"><span class="dot"></span>17. RAP and ABAP Cloud</a></li>
+    <li data-for="perf"><a href="#perf"><span class="dot"></span>18. Debugging and performance</a></li>
+    <li class="grp">Interview day</li>
+    <li data-for="hr"><a href="#hr"><span class="dot"></span>19. Project story and HR</a></li>
+    <li><a href="#tcodes"><span class="dot"></span>T-code cheat sheet</a></li>
+  </ol>
+  </div>
+</nav>
+
+<main id="main">
+<div class="tools">
+  <input type="search" id="q" placeholder="Search questions and topics, e.g. FOR ALL ENTRIES" aria-label="Search questions and topics">
+  <button id="expand">Open all answers</button>
+  <button id="collapse">Close all</button>
+  <span class="count" id="count"></span>
+</div>
+
+<!-- PLAN -->
+<section class="card" id="plan">
+  <div class="mhead"><h2 class="mt">4-week plan</h2></div>
+  <p>About two hours on weekdays and four on weekends. Mark a module done only once she can answer its questions out loud without looking. That is how the interview will feel.</p>
+  <div class="plan">
+    <div class="week"><span class="w">Week 1</span><h4>Foundations</h4><ul><li>Modules 1–6</li><li>Write 3 small reports in SE38 using new syntax</li><li>Practise FOR ALL ENTRIES and joins</li></ul></div>
+    <div class="week"><span class="w">Week 2</span><h4>Core development</h4><ul><li>Modules 7–11</li><li>Build one OO ALV report end to end</li><li>Find and implement one BAdI</li></ul></div>
+    <div class="week"><span class="w">Week 3</span><h4>Integration</h4><ul><li>Modules 12–15</li><li>Draw the IDoc config flow from memory</li><li>Explain a workflow she built at Sanofi</li></ul></div>
+    <div class="week"><span class="w">Week 4</span><h4>HANA and interview</h4><ul><li>Modules 16–19</li><li>Write one CDS view and one AMDP</li><li>Two mock interviews and a timed project pitch</li></ul></div>
+  </div>
+  <p class="tip">Accenture's JD asks for "ABAP development" first and "ABAP for HANA" as a plus. So modules 2–13 and 18 carry most of the weight. Modules 16 and 17 are where she can stand out, especially with the ABAP Cloud certification.</p>
+</section>
+
+<!-- 1 ARCH -->
+<section class="card" id="arch" data-mod>
+  <div class="mhead"><span class="num">01</span><h2 class="mt">SAP system basics</h2><span class="lvl l1">Basics</span><label class="done"><input type="checkbox" data-done="arch" id="d-arch">Done</label></div>
+  <p class="jd"><b>Why it's asked:</b> warm-up questions. Answering them crisply shows she understands what runs underneath her code.</p>
+  <h3>Learn</h3>
+  <ul>
+    <li><b>Three-tier architecture:</b> presentation layer (SAP GUI, Fiori), application layer (ABAP application servers) and database layer (SAP HANA in S/4).</li>
+    <li><b>Work processes</b> on the application server: Dialog (D), Background (B), Update (V1/V2), Enqueue (E, lock handling) and Spool (S, printing). The dispatcher hands user requests to free work processes.</li>
+    <li><b>Client concept:</b> a client is a self-contained business unit in one system. Tables with <code>MANDT</code> as the first key field are client-dependent.</li>
+    <li><b>System landscape:</b> DEV → QA → PRD. Code moves through <b>transport requests</b>: Workbench requests for repository objects, Customizing requests for configuration.</li>
+    <li><b>Packages</b> group objects. <code>$TMP</code> holds local objects that cannot be transported.</li>
+    <li><b>RICEFW</b> is the standard way to classify custom objects: Reports, Interfaces, Conversions, Enhancements, Forms, Workflows.</li>
+  </ul>
+  <h3>Interview questions</h3>
+  <details class="qa"><summary>Explain SAP's three-tier architecture.</summary><div class="a"><p>The presentation layer is the UI (SAP GUI or Fiori in a browser). The application layer runs ABAP programs on one or more application servers, with a dispatcher assigning requests to work processes. The database layer stores all data and, in S/4HANA, is always SAP HANA. Separating them lets each layer scale independently.</p></div></details>
+  <details class="qa"><summary>What types of work processes exist?</summary><div class="a"><p>Dialog for interactive requests, Background for scheduled jobs (SM36/SM37), Update for database changes made via update function modules, Enqueue for managing SAP locks, and Spool for print output. SM50 shows them on one server, SM66 across servers.</p></div></details>
+  <details class="qa"><summary>What is a transport request and how does it move?</summary><div class="a"><p>A container that records changed objects. Each developer works in a task under the request. Tasks are released first, then the request, in SE09/SE10. Basis imports the released request into QA and PRD through STMS. Workbench requests carry repository objects (programs, tables). Customizing requests carry client-specific configuration.</p></div></details>
+  <details class="qa"><summary>What is the difference between client-dependent and client-independent objects?</summary><div class="a"><p>Client-dependent data has <code>MANDT</code> as its first key field and is visible only in its client (business data, most configuration). Client-independent objects are shared across all clients: ABAP programs, DDIC definitions, Smart Forms, and tables without a <code>MANDT</code> field.</p></div></details>
+</section>
+
+<!-- 2 DDIC -->
+<section class="card" id="ddic" data-mod>
+  <div class="mhead"><span class="num">02</span><h2 class="mt">ABAP Dictionary (SE11)</h2><span class="lvl l1">Basics</span><label class="done"><input type="checkbox" data-done="ddic" id="d-ddic">Done</label></div>
+  <p class="jd"><b>JD link:</b> "application design principles". Good table design is where design starts. Expect 3–5 questions here in almost every ABAP interview.</p>
+  <h3>Learn</h3>
+  <ul>
+    <li><b>Domain</b> defines technical attributes: data type, length, decimals, fixed values or value table. <b>Data element</b> defines meaning: field labels and F1 documentation, and refers to a domain or a built-in type.</li>
+    <li><b>Table types:</b> transparent (1:1 with a DB table), pooled and cluster (legacy, converted to transparent in S/4HANA).</li>
+    <li><b>Delivery class</b>: A (application data), C (customizing), L (temporary), G, E, S, W. <b>Technical settings</b>: data class, size category, buffering.</li>
+    <li><b>Buffering</b>: single-record, generic area, full. Use it for small, frequently read, rarely changed tables.</li>
+    <li><b>Views:</b> database view (inner join), projection view (one table, subset of fields), maintenance view (for SM30), help view (outer join, used in search helps).</li>
+    <li><b>Search helps:</b> elementary (one selection method) and collective (several elementary helps as tabs). Search help exits change the behaviour.</li>
+    <li><b>Lock objects</b> (names start with E, e.g. <code>EZ_ORDER</code>) generate <code>ENQUEUE_EZ_ORDER</code> and <code>DEQUEUE_EZ_ORDER</code>.</li>
+    <li><b>Append structure vs include structure:</b> an append belongs to one table and enhances standard tables without modification. An include is reusable in many tables.</li>
+    <li><b>Table Maintenance Generator</b> (SE54 or from SE11) creates the SM30 maintenance screens.</li>
+    <li>Foreign keys, check tables, value tables, text tables, secondary indexes.</li>
+  </ul>
+  <h3>Interview questions</h3>
+  <details class="qa"><summary>Domain vs data element?</summary><div class="a"><p>A domain is technical: type, length, value range. A data element is semantic: field labels, documentation and search help attachment. One domain can be reused by many data elements. For example, a domain <code>CHAR10</code> can back both "Customer ID" and "Vendor ID".</p></div></details>
+  <details class="qa"><summary>Append structure vs include structure?</summary><div class="a"><p>An append structure is assigned to exactly one table, always added at the end, and lets you add fields to SAP standard tables without a modification key. Appends survive upgrades. An include structure is an independent structure you can include in many tables or structures, anywhere in the field list. Custom fields in appends should start with <code>ZZ</code> or <code>YY</code>.</p></div></details>
+  <details class="qa"><summary>What are the types of views and when is each used?</summary><div class="a"><p>A database view joins tables with an inner join and is read-only if it has more than one table. A projection view hides fields of a single table. A maintenance view lets users maintain related tables together in SM30. A help view uses an outer join and exists only to feed search helps. In S/4HANA, CDS views replace most new database view needs.</p></div></details>
+  <details class="qa"><summary>What is the value table vs check table?</summary><div class="a"><p>A value table is set at domain level and is the default proposal for a check table. A check table is set at field level through a foreign key, and that is what actually enforces validation on screens. A value table alone does not validate anything.</p></div></details>
+  <details class="qa"><summary>What lock modes exist on a lock object?</summary><div class="a"><p>E (exclusive, cumulative: the same user can lock again), X (exclusive, non-cumulative), S (shared, several users can read-lock) and O (optimistic, converted to E when changing). Locks are logical: they live in the enqueue server, not the database, and are visible in SM12.</p></div></details>
+  <details class="qa"><summary>When should you buffer a table, and when not?</summary><div class="a"><p>Buffer small tables that are read often and changed rarely, such as customizing tables. Don't buffer tables that change frequently, large transaction tables, or tables where you always need the latest value. Note that <code>SELECT ... BYPASSING BUFFER</code>, aggregate functions, joins and <code>ORDER BY</code> on non-key fields skip the buffer.</p></div></details>
+  <details class="qa"><summary>How do you create a table with a maintenance screen?</summary><div class="a"><p>Create domains and data elements, create the table in SE11 with delivery class C or A, set technical settings and activate. Then use Utilities → Table Maintenance Generator to choose an authorization group, function group and one-step or two-step screens. Users maintain it in SM30, or via a custom T-code created in SE93.</p></div></details>
+</section>
+
+<!-- 3 LANG -->
+<section class="card" id="lang" data-mod>
+  <div class="mhead"><span class="num">03</span><h2 class="mt">ABAP language core and modern syntax</h2><span class="lvl l1">Basics</span><label class="done"><input type="checkbox" data-done="lang" id="d-lang">Done</label></div>
+  <p class="jd"><b>JD link:</b> "Proficiency in SAP ABAP Development". Interviewers often ask her to rewrite old syntax in 7.4+ style live.</p>
+  <h3>Learn</h3>
+  <ul>
+    <li>Elementary types: <code>c n d t i p f string xstring decfloat16/34</code>. Use <code>TYPE</code> for types, <code>LIKE</code> for existing data objects.</li>
+    <li>Structures, internal tables, <b>field symbols</b> (pointers to existing data) and <b>data references</b> (<code>REF TO</code>, <code>NEW</code>, <code>-&gt;*</code>).</li>
+    <li>Control flow: <code>IF/CASE/DO/WHILE/LOOP</code>, <code>CHECK</code>, <code>EXIT</code>, <code>CONTINUE</code>.</li>
+    <li>Key system fields: <code>sy-subrc sy-tabix sy-index sy-uname sy-datum sy-uzeit sy-dbcnt sy-lsind sy-ucomm</code>.</li>
+    <li>ABAP 7.4/7.5 syntax: inline declarations, <code>VALUE</code>, <code>CORRESPONDING</code>, <code>COND</code>, <code>SWITCH</code>, <code>REDUCE</code>, <code>FILTER</code>, <code>FOR</code> loops, table expressions, string templates.</li>
+  </ul>
+<pre><code><span class="c">" Old style</span>
+DATA lv_count TYPE i.
+DATA ls_mara  TYPE mara.
+READ TABLE lt_mara INTO ls_mara WITH KEY matnr = lv_matnr.
+
+<span class="c">" Modern 7.4+ style</span>
+DATA(lv_total) = lines( lt_mara ).
+DATA(ls_mat)   = VALUE #( lt_mara[ matnr = lv_matnr ] OPTIONAL ).
+IF line_exists( lt_mara[ matnr = lv_matnr ] ). ENDIF.
+
+DATA(lt_names) = VALUE string_table( FOR ls IN lt_kna1 WHERE ( land1 = 'IN' ) ( |{ ls-name1 }| ) ).
+DATA(lv_sum)   = REDUCE netwr( INIT s = 0 FOR wa IN lt_vbak NEXT s = s + wa-netwr ).
+DATA(lv_text)  = COND string( WHEN lv_amt &gt; 1000 THEN 'High' ELSE 'Normal' ).
+DATA(lv_msg)   = |Order { lv_vbeln ALPHA = OUT } created on { sy-datum DATE = USER }|.
+lt_target      = CORRESPONDING #( lt_source MAPPING kunnr = customer ).</code></pre>
+  <h3>Interview questions</h3>
+  <details class="qa"><summary>What is a field symbol and why use it over a work area?</summary><div class="a"><p>A field symbol is a placeholder that points to existing memory and has no memory of its own. In <code>LOOP AT itab ASSIGNING &lt;fs&gt;</code>, changes go straight into the table row, so no <code>MODIFY</code> is needed and no row is copied. That makes loops over large or wide tables faster. Always check <code>IS ASSIGNED</code> before use. Accessing an unassigned field symbol causes a dump.</p></div></details>
+  <details class="qa"><summary>Field symbol vs data reference?</summary><div class="a"><p>A field symbol is an alias you assign to existing data. A data reference is a variable holding an address. You can pass references around, store them in tables and create anonymous data with <code>NEW</code> or <code>CREATE DATA</code>, then dereference with <code>-&gt;*</code>. References are needed for dynamic programming, e.g. creating a table whose type is known only at runtime.</p></div></details>
+  <details class="qa"><summary>What happens if a table expression doesn't find a row?</summary><div class="a"><p><code>itab[ key = val ]</code> raises <code>CX_SY_ITAB_LINE_NOT_FOUND</code>. Avoid that by using <code>VALUE #( itab[ ... ] OPTIONAL )</code> or <code>DEFAULT</code>, by checking <code>line_exists( )</code> first, or by catching the exception in TRY/CATCH.</p></div></details>
+  <details class="qa"><summary>Explain sy-subrc, sy-tabix and sy-index.</summary><div class="a"><p><code>sy-subrc</code> is the return code of the last statement: 0 means success. <code>sy-tabix</code> is the current row index in internal table operations (LOOP, READ). <code>sy-index</code> is the loop counter in DO and WHILE loops.</p></div></details>
+  <details class="qa"><summary>What are REDUCE, FILTER and CORRESPONDING used for?</summary><div class="a"><p><code>REDUCE</code> folds a table into one value, such as a sum or concatenation. <code>FILTER</code> builds a new table with rows matching a condition and needs a sorted or hashed key on the filter field. <code>CORRESPONDING</code> moves same-named fields between structures or tables, with <code>MAPPING</code> for renamed fields and <code>EXCEPT</code> to skip fields.</p></div></details>
+</section>
+
+<!-- 4 ITAB -->
+<section class="card" id="itab" data-mod>
+  <div class="mhead"><span class="num">04</span><h2 class="mt">Internal tables</h2><span class="lvl l1">Basics</span><label class="done"><input type="checkbox" data-done="itab" id="d-itab">Done</label></div>
+  <p class="jd"><b>JD link:</b> "performance tuning". Picking the right table type is the first performance question most panels ask.</p>
+  <div class="tw"><table>
+    <thead><tr><th>Type</th><th>Access</th><th>Key</th><th>Read cost</th><th>Use when</th></tr></thead>
+    <tbody>
+      <tr><td>STANDARD</td><td>Index or key</td><td>Non-unique only</td><td>Linear, or log with BINARY SEARCH after SORT</td><td>Appending, index access, small data</td></tr>
+      <tr><td>SORTED</td><td>Index or key</td><td>Unique or non-unique</td><td>Logarithmic</td><td>Data needed in order, partial-key reads</td></tr>
+      <tr><td>HASHED</td><td>Key only</td><td>Unique only</td><td>Constant</td><td>Large lookup tables read by full key</td></tr>
+    </tbody>
+  </table></div>
+<pre><code>DATA lt_cust TYPE HASHED TABLE OF kna1 WITH UNIQUE KEY kunnr.
+DATA lt_item TYPE SORTED TABLE OF vbap WITH NON-UNIQUE KEY vbeln posnr.
+
+<span class="c">" Parallel cursor: avoids a nested full loop</span>
+SORT lt_vbak BY vbeln. SORT lt_vbap BY vbeln.
+LOOP AT lt_vbak ASSIGNING FIELD-SYMBOL(&lt;h&gt;).
+  READ TABLE lt_vbap TRANSPORTING NO FIELDS WITH KEY vbeln = &lt;h&gt;-vbeln BINARY SEARCH.
+  DATA(lv_idx) = sy-tabix.
+  LOOP AT lt_vbap ASSIGNING FIELD-SYMBOL(&lt;i&gt;) FROM lv_idx.
+    IF &lt;i&gt;-vbeln &lt;&gt; &lt;h&gt;-vbeln. EXIT. ENDIF.
+    <span class="c">" process item</span>
+  ENDLOOP.
+ENDLOOP.</code></pre>
+  <h3>Interview questions</h3>
+  <details class="qa"><summary>Standard vs sorted vs hashed table: which would you choose and why?</summary><div class="a"><p>Hashed for big lookup tables read by full unique key, because access time stays constant. Sorted when you need ordered data or read by a leading part of the key, at logarithmic cost. Standard when you mostly append and loop, or need index access. If you must read a standard table by key, SORT it once and use BINARY SEARCH.</p></div></details>
+  <details class="qa"><summary>APPEND vs INSERT vs COLLECT vs MODIFY?</summary><div class="a"><p><code>APPEND</code> adds at the end (standard tables). <code>INSERT</code> adds by key or index and keeps sort order in sorted tables. <code>COLLECT</code> adds a row, or sums the numeric fields if a row with the same non-numeric key already exists. <code>MODIFY</code> changes an existing row by index or key.</p></div></details>
+  <details class="qa"><summary>What is the parallel cursor technique?</summary><div class="a"><p>When looping over header and item tables, a nested <code>LOOP ... WHERE</code> on a standard table scans the item table once per header. Parallel cursor sorts both tables, finds the first matching item with BINARY SEARCH, loops from that index and exits when the key changes. Cost drops from roughly n×m to n log m. A sorted item table with <code>LOOP ... WHERE</code> on the key gives a similar gain with cleaner code.</p></div></details>
+  <details class="qa"><summary>What are secondary keys on internal tables?</summary><div class="a"><p>Extra sorted or hashed keys declared with <code>WITH ... KEY name COMPONENTS ...</code>. They let you read a table quickly by fields other than the primary key, e.g. <code>READ TABLE lt WITH KEY by_kunnr COMPONENTS kunnr = x</code>. They cost memory and are updated lazily.</p></div></details>
+  <details class="qa"><summary>How do you delete duplicates from an internal table?</summary><div class="a"><p>SORT by the comparison fields, then <code>DELETE ADJACENT DUPLICATES FROM itab COMPARING f1 f2</code>. Without the sort, only neighbouring duplicates are removed.</p></div></details>
+</section>
+
+<!-- 5 SQL -->
+<section class="card" id="sql" data-mod>
+  <div class="mhead"><span class="num">05</span><h2 class="mt">Open SQL</h2><span class="lvl l1">Basics</span><label class="done"><input type="checkbox" data-done="sql" id="d-sql">Done</label></div>
+  <p class="jd"><b>JD link:</b> "performance tuning". Most slow ABAP programs are slow because of database access.</p>
+  <h3>Learn</h3>
+  <ul>
+    <li><code>SELECT SINGLE</code>, <code>UP TO n ROWS</code>, <code>INTO TABLE</code>, <code>APPENDING TABLE</code>, <code>PACKAGE SIZE</code>.</li>
+    <li>INNER and LEFT OUTER JOIN, subqueries, aggregates (<code>COUNT SUM MAX MIN AVG</code>), <code>GROUP BY</code>, <code>HAVING</code>.</li>
+    <li><code>FOR ALL ENTRIES</code> and its traps.</li>
+    <li>New SQL syntax: comma-separated fields, <code>@</code> host variables, inline <code>@DATA( )</code>, <code>CASE</code>, string functions, literals.</li>
+    <li>DML: <code>INSERT UPDATE MODIFY DELETE</code> and checking <code>sy-subrc</code> and <code>sy-dbcnt</code>.</li>
+  </ul>
+<pre><code>SELECT a~vbeln, a~kunnr, b~posnr, b~matnr, b~netwr
+  FROM vbak AS a
+  INNER JOIN vbap AS b ON b~vbeln = a~vbeln
+  WHERE a~erdat IN @s_erdat
+  INTO TABLE @DATA(lt_orders).
+
+IF lt_orders IS NOT INITIAL.          <span class="c">" never skip this check</span>
+  SELECT kunnr, name1 FROM kna1
+    FOR ALL ENTRIES IN @lt_orders
+    WHERE kunnr = @lt_orders-kunnr
+    INTO TABLE @DATA(lt_kna1).
+ENDIF.</code></pre>
+  <h3>Interview questions</h3>
+  <details class="qa"><summary>What are the rules and pitfalls of FOR ALL ENTRIES?</summary><div class="a"><ul><li>If the driver table is empty, the WHERE clause is ignored and every row is read. Always check <code>IS NOT INITIAL</code> first.</li><li>Duplicates are removed from the result, so select all key fields you need, or you may lose rows.</li><li>Sort and delete duplicates in the driver table first to reduce database calls.</li><li>Aggregates and <code>ORDER BY</code> aren't allowed in the same statement.</li></ul></div></details>
+  <details class="qa"><summary>JOIN or FOR ALL ENTRIES: which is better?</summary><div class="a"><p>A join is usually better, especially on HANA, because the database does the work in one round trip. FOR ALL ENTRIES is useful when the second table is a pooled or cluster table in older systems, when data comes from a non-database source such as an uploaded file, or when a join would be very complex. Don't join more than a handful of tables, and make sure join fields are indexed.</p></div></details>
+  <details class="qa"><summary>SELECT SINGLE vs SELECT UP TO 1 ROWS?</summary><div class="a"><p>Use <code>SELECT SINGLE</code> when you supply the full primary key, so exactly one row is expected and it can use the table buffer. Use <code>UP TO 1 ROWS</code> when you have only part of the key or need the first row by an <code>ORDER BY</code>.</p></div></details>
+  <details class="qa"><summary>Why avoid SELECT *?</summary><div class="a"><p>It transfers every column, which wastes network and memory. On HANA, a column store, it also forces reading every column. Select only the fields you need, into a matching structure.</p></div></details>
+  <details class="qa"><summary>Why avoid SELECT inside LOOP?</summary><div class="a"><p>Each pass is a separate database round trip, so 10,000 rows means 10,000 calls. Read all needed data once with a join or FOR ALL ENTRIES into an internal table, then read from memory inside the loop (ideally a hashed or sorted table).</p></div></details>
+  <details class="qa"><summary>What is a secondary index and when do you create one?</summary><div class="a"><p>An extra database index on non-key fields, created in SE11, used when a frequent selection filters on fields not in the primary key. Too many indexes slow down inserts and updates. On HANA, the column store makes secondary indexes rarely necessary.</p></div></details>
+</section>
+
+<!-- 6 MOD -->
+<section class="card" id="modz" data-mod>
+  <div class="mhead"><span class="num">06</span><h2 class="mt">Modularization</h2><span class="lvl l1">Basics</span><label class="done"><input type="checkbox" data-done="modz" id="d-modz">Done</label></div>
+  <h3>Learn</h3>
+  <ul>
+    <li>Includes, macros (avoid), subroutines (<code>PERFORM</code>/<code>FORM</code>, obsolete for new code), function modules (SE37) in function groups, and methods (preferred).</li>
+    <li>Function module types: normal, remote-enabled (RFC), update module.</li>
+    <li>Parameters: <code>IMPORTING EXPORTING CHANGING TABLES</code> (TABLES is obsolete), exceptions.</li>
+    <li>Pass by value vs pass by reference.</li>
+  </ul>
+  <h3>Interview questions</h3>
+  <details class="qa"><summary>Subroutine vs function module vs method?</summary><div class="a"><p>A subroutine is local to its program and obsolete for new development. A function module is global, lives in a function group (which shares global data), can be RFC-enabled or an update module, and supports exceptions. Methods belong to classes and support encapsulation, inheritance and class-based exceptions. New code should use methods. Function modules are still needed for RFC, BAPIs and update tasks.</p></div></details>
+  <details class="qa"><summary>Pass by value vs pass by reference?</summary><div class="a"><p>By reference (the default for IMPORTING in methods) passes the address, so it is fast and no copy is made. For EXPORTING or CHANGING it changes the caller's data directly. By value (<code>VALUE( )</code>) works on a copy, which is safer but slower for large tables. RFC function modules must pass by value.</p></div></details>
+  <details class="qa"><summary>What is a function group and why does it matter?</summary><div class="a"><p>A container for related function modules that share global data, screens and includes (the TOP include). Calling one FM loads the whole group into memory, and global data persists between calls within the same session. That can be useful, or cause surprising bugs.</p></div></details>
+</section>
+
+<!-- 7 REPORTS -->
+<section class="card" id="rep" data-mod>
+  <div class="mhead"><span class="num">07</span><h2 class="mt">Reports and ALV</h2><span class="lvl l2">Core</span><label class="done"><input type="checkbox" data-done="rep" id="d-rep">Done</label></div>
+  <p class="jd"><b>JD link:</b> "design, build and configure applications". Reports are the R in RICEFW and the most common first assignment.</p>
+  <h3>Learn</h3>
+  <ul>
+    <li>Selection screen: <code>PARAMETERS</code>, <code>SELECT-OPTIONS</code> (ranges with SIGN, OPTION, LOW, HIGH), radio buttons, checkboxes, blocks, <code>MODIF ID</code> to show or hide fields.</li>
+    <li>Classical report events, in order: <code>LOAD-OF-PROGRAM → INITIALIZATION → AT SELECTION-SCREEN OUTPUT → AT SELECTION-SCREEN → START-OF-SELECTION → END-OF-SELECTION</code>. List events: <code>TOP-OF-PAGE</code>, <code>END-OF-PAGE</code>.</li>
+    <li>Interactive events: <code>AT LINE-SELECTION</code>, <code>AT USER-COMMAND</code>, <code>TOP-OF-PAGE DURING LINE-SELECTION</code>, <code>HIDE</code>, <code>GET CURSOR</code>. One basic list plus up to 20 detail lists (<code>sy-lsind</code>).</li>
+    <li>ALV options: <code>REUSE_ALV_GRID_DISPLAY</code> (old FM), <code>CL_GUI_ALV_GRID</code> (OO, needs a screen and container, editable), <code>CL_SALV_TABLE</code> (simple OO, quick, not editable).</li>
+    <li>Field catalog, layout, sort, hotspot, events (<code>DOUBLE_CLICK</code>, <code>HOTSPOT_CLICK</code>, <code>TOOLBAR</code>, <code>USER_COMMAND</code>).</li>
+  </ul>
+<pre><code>TRY.
+    cl_salv_table=&gt;factory( IMPORTING r_salv_table = DATA(lo_alv)
+                            CHANGING  t_table      = lt_orders ).
+    lo_alv-&gt;get_functions( )-&gt;set_all( abap_true ).
+    lo_alv-&gt;get_columns( )-&gt;set_optimize( abap_true ).
+    lo_alv-&gt;display( ).
+  CATCH cx_salv_msg INTO DATA(lx).
+    MESSAGE lx-&gt;get_text( ) TYPE 'E'.
+ENDTRY.</code></pre>
+  <h3>Interview questions</h3>
+  <details class="qa"><summary>List the events of a classical report in order.</summary><div class="a"><p>LOAD-OF-PROGRAM, INITIALIZATION (set defaults), AT SELECTION-SCREEN OUTPUT (change screen before display, e.g. hide fields), AT SELECTION-SCREEN (validate input; also ON field, ON VALUE-REQUEST for F4, ON HELP-REQUEST for F1), START-OF-SELECTION (main logic), END-OF-SELECTION (output). TOP-OF-PAGE and END-OF-PAGE fire during list output.</p></div></details>
+  <details class="qa"><summary>How do you validate selection screen input?</summary><div class="a"><p>In <code>AT SELECTION-SCREEN ON p_field</code> (or <code>ON BLOCK</code>), check the value against the database and issue <code>MESSAGE ... TYPE 'E'</code>. The screen returns with the field ready for input. Validating in START-OF-SELECTION would end the program instead.</p></div></details>
+  <details class="qa"><summary>How many secondary lists can an interactive report have?</summary><div class="a"><p>20 secondary lists plus the basic list (sy-lsind 0 to 20). Going beyond that causes a runtime error.</p></div></details>
+  <details class="qa"><summary>CL_SALV_TABLE vs CL_GUI_ALV_GRID?</summary><div class="a"><p>CL_SALV_TABLE is quick: no screen or field catalog needed, and good for display-only reports. CL_GUI_ALV_GRID needs a screen, a custom container and a field catalog, but supports editable cells, data change events and full toolbar control. Choose GUI_ALV_GRID when users must edit data in the grid.</p></div></details>
+  <details class="qa"><summary>How do you make an ALV editable and save changes?</summary><div class="a"><p>With CL_GUI_ALV_GRID, set <code>edit = abap_true</code> in the field catalog for the columns, register edit events (<code>register_edit_event</code> with <code>mc_evt_modified</code> or <code>mc_evt_enter</code>), handle <code>DATA_CHANGED</code> to validate, and on SAVE call <code>check_changed_data( )</code> to transfer changes to the internal table before updating the database.</p></div></details>
+  <details class="qa"><summary>How do you dynamically hide a selection-screen field?</summary><div class="a"><p>Give fields a <code>MODIF ID</code>, then in AT SELECTION-SCREEN OUTPUT loop at <code>SCREEN</code>, check <code>screen-group1</code>, set <code>screen-active = 0</code> (or <code>invisible = 1</code>), and <code>MODIFY SCREEN</code>. Usually this is triggered by a radio button with <code>USER-COMMAND</code>.</p></div></details>
+</section>
+
+<!-- 8 OOP -->
+<section class="card" id="oop" data-mod>
+  <div class="mhead"><span class="num">08</span><h2 class="mt">OOP ABAP</h2><span class="lvl l2">Core</span><label class="done"><input type="checkbox" data-done="oop" id="d-oop">Done</label></div>
+  <p class="jd"><b>JD link:</b> "strong understanding of application design principles". OOP is how design is judged in ABAP interviews.</p>
+  <h3>Learn</h3>
+  <ul>
+    <li>Local classes (in a program) vs global classes (SE24 or ADT). <code>DEFINITION</code> and <code>IMPLEMENTATION</code>.</li>
+    <li>Visibility: PUBLIC, PROTECTED, PRIVATE. Instance vs static (<code>CLASS-DATA</code>, <code>CLASS-METHODS</code>).</li>
+    <li><code>CONSTRUCTOR</code> (instance, importing parameters only) and <code>CLASS_CONSTRUCTOR</code> (static, no parameters, runs once).</li>
+    <li>Inheritance (<code>INHERITING FROM</code>, <code>REDEFINITION</code>, <code>super-&gt;</code>), abstract and final classes, interfaces, polymorphism, casting (<code>?=</code>, <code>CAST #( )</code>).</li>
+    <li>Events: <code>EVENTS</code>, <code>RAISE EVENT</code>, <code>SET HANDLER</code>.</li>
+    <li>Class-based exceptions: <code>CX_STATIC_CHECK</code>, <code>CX_DYNAMIC_CHECK</code>, <code>CX_NO_CHECK</code>. <code>TRY/CATCH/CLEANUP</code>, <code>RAISE EXCEPTION</code>, <code>RETRY</code>, <code>RESUME</code>.</li>
+    <li>Design patterns: singleton, factory, MVC, and SOLID basics.</li>
+  </ul>
+<pre><code>CLASS lcl_logger DEFINITION FINAL CREATE PRIVATE.
+  PUBLIC SECTION.
+    CLASS-METHODS get_instance RETURNING VALUE(ro) TYPE REF TO lcl_logger.
+    METHODS log IMPORTING iv_msg TYPE string.
+  PRIVATE SECTION.
+    CLASS-DATA go_instance TYPE REF TO lcl_logger.
+ENDCLASS.
+
+CLASS lcl_logger IMPLEMENTATION.
+  METHOD get_instance.            <span class="c">" Singleton</span>
+    IF go_instance IS NOT BOUND.
+      go_instance = NEW #( ).
+    ENDIF.
+    ro = go_instance.
+  ENDMETHOD.
+  METHOD log.
+    WRITE / iv_msg.
+  ENDMETHOD.
+ENDCLASS.</code></pre>
+  <h3>Interview questions</h3>
+  <details class="qa"><summary>Abstract class vs interface?</summary><div class="a"><p>An abstract class can have implemented methods, attributes and constructors, and a class can inherit from only one. An interface has only declarations (plus constants and attributes), and a class can implement many. Use an abstract class for shared base behaviour in an "is-a" hierarchy. Use an interface for a contract that unrelated classes fulfil, e.g. <code>IF_WORKFLOW</code>.</p></div></details>
+  <details class="qa"><summary>Instance constructor vs static constructor?</summary><div class="a"><p>The instance <code>CONSTRUCTOR</code> runs on every <code>NEW</code> or <code>CREATE OBJECT</code>, can have importing parameters only, and initialises instance attributes. The <code>CLASS_CONSTRUCTOR</code> runs once per session, before the first access to the class, has no parameters, and initialises static data.</p></div></details>
+  <details class="qa"><summary>Explain the three exception class types.</summary><div class="a"><p><code>CX_STATIC_CHECK</code>: must be handled or declared in RAISING, and the compiler checks this. <code>CX_DYNAMIC_CHECK</code>: must be declared, checked only at runtime, used for errors the caller can avoid (e.g. <code>CX_SY_ZERODIVIDE</code>). <code>CX_NO_CHECK</code>: cannot be declared, used for errors that can occur anywhere, such as resource shortages.</p></div></details>
+  <details class="qa"><summary>What is polymorphism? Give an ABAP example.</summary><div class="a"><p>The same method call behaves differently depending on the object's real class. Example: an interface <code>zif_output</code> with method <code>send</code>, implemented by <code>zcl_email_output</code> and <code>zcl_print_output</code>. The caller holds a <code>REF TO zif_output</code> and calls <code>send( )</code> without knowing which one it has.</p></div></details>
+  <details class="qa"><summary>Narrowing vs widening cast?</summary><div class="a"><p>Up-cast (narrowing in SAP terms): assigning a subclass reference to a superclass reference. Always allowed, using <code>=</code>. Down-cast (widening): assigning a superclass reference to a subclass reference. Needs <code>?=</code> or <code>CAST #( )</code> and raises <code>CX_SY_MOVE_CAST_ERROR</code> if the object isn't really that subclass.</p></div></details>
+  <details class="qa"><summary>Can a final method be redefined? Can an abstract class be instantiated?</summary><div class="a"><p>No to both. A final method can't be redefined in subclasses, and a final class can't be inherited. An abstract class can't be instantiated directly, only its concrete subclasses.</p></div></details>
+  <details class="qa"><summary>How do events work in ABAP Objects?</summary><div class="a"><p>A class declares <code>EVENTS evt EXPORTING ...</code> and fires it with <code>RAISE EVENT</code>. Another class defines a handler method <code>FOR EVENT evt OF class</code> and registers it at runtime with <code>SET HANDLER obj-&gt;handler FOR sender</code>. The ALV grid's double-click is the classic example.</p></div></details>
+</section>
+
+<!-- 9 FORMS -->
+<section class="card" id="forms" data-mod>
+  <div class="mhead"><span class="num">09</span><h2 class="mt">Forms: SAPscript, Smart Forms, Adobe Forms</h2><span class="lvl l2">Core</span><label class="done"><input type="checkbox" data-done="forms" id="d-forms">Done</label></div>
+  <div class="tw"><table>
+    <thead><tr><th></th><th>SAPscript</th><th>Smart Forms</th><th>Adobe Forms</th></tr></thead>
+    <tbody>
+      <tr><td>T-code</td><td><code>SE71</code>, styles <code>SE72</code></td><td><code>SMARTFORMS</code>, styles <code>SMARTSTYLES</code></td><td><code>SFP</code></td></tr>
+      <tr><td>Client</td><td>Dependent</td><td>Independent</td><td>Independent</td></tr>
+      <tr><td>Driver calls</td><td><code>OPEN_FORM WRITE_FORM CLOSE_FORM</code></td><td><code>SSF_FUNCTION_MODULE_NAME</code>, then the generated FM</td><td><code>FP_JOB_OPEN</code>, <code>FP_FUNCTION_MODULE_NAME</code>, generated FM, <code>FP_JOB_CLOSE</code></td></tr>
+      <tr><td>Main window</td><td>Up to 99 per page</td><td>One</td><td>Layout in Adobe LiveCycle Designer</td></tr>
+      <tr><td>Needs</td><td>—</td><td>—</td><td>Adobe Document Services (ADS)</td></tr>
+    </tbody>
+  </table></div>
+  <ul>
+    <li>Output determination: condition records and output types in <code>NACE</code>, linking a driver program and form. In S/4, BRF+ output management is used for many documents.</li>
+    <li>Standard texts in <code>SO10</code>, read with <code>READ_TEXT</code>.</li>
+    <li>Smart Form nodes: pages, windows (main, secondary, final, copies), text, table, loop, alternative, program lines, command.</li>
+  </ul>
+  <h3>Interview questions</h3>
+  <details class="qa"><summary>Why call SSF_FUNCTION_MODULE_NAME instead of the generated FM directly?</summary><div class="a"><p>The generated function module name (<code>/1BCDWB/SF00000xxx</code>) can differ between systems because it is generated on activation in each system. Looking it up by form name at runtime keeps the driver program working after transport.</p></div></details>
+  <details class="qa"><summary>SAPscript vs Smart Forms?</summary><div class="a"><p>Smart Forms are client-independent, have a graphical editor, support only one main window but have tables and loops built in, and generate a function module, so no OPEN_FORM/WRITE_FORM calls are needed. SAPscript is client-dependent, text-based and needs explicit driver calls. Smart Forms can also be output as XML or HTML.</p></div></details>
+  <details class="qa"><summary>How do you debug a Smart Form?</summary><div class="a"><p>Put a <code>BREAK-POINT</code> in a program-lines node, or set a breakpoint in the generated FM (find it via Environment → Function module name). You can also debug the driver program into the generated FM call.</p></div></details>
+  <details class="qa"><summary>What is the final window in Smart Forms?</summary><div class="a"><p>A window processed last, after all other windows, even though it appears earlier on the page. Use it for values known only at the end, such as "Page X of Y" totals or grand totals printed on the first page.</p></div></details>
+  <details class="qa"><summary>How do you attach a custom form to a standard output like a sales order?</summary><div class="a"><p>In NACE, pick the application (V1 for sales), choose the output type, and under Processing routines assign the custom driver program, form routine and Smart Form or Adobe form name. Usually you copy the standard output type and driver program first.</p></div></details>
+</section>
+
+<!-- 10 ENH -->
+<section class="card" id="enh" data-mod>
+  <div class="mhead"><span class="num">10</span><h2 class="mt">Enhancements</h2><span class="lvl l2">Core</span><label class="done"><input type="checkbox" data-done="enh" id="d-enh">Done</label></div>
+  <p class="jd"><b>JD link:</b> "contribute in providing solutions". Most business changes are done through enhancements, not new programs. She has used BADIs at Sanofi, so expect follow-up depth here.</p>
+  <h3>Learn</h3>
+  <ul>
+    <li><b>User exits:</b> empty FORM routines in SAP includes (e.g. <code>MV45AFZZ</code> for sales orders). Changing them needs a modification key.</li>
+    <li><b>Customer exits:</b> <code>SMOD</code> (find) and <code>CMOD</code> (project): function exits (<code>CALL CUSTOMER-FUNCTION</code>), screen exits and menu exits. Each can be used in one project only.</li>
+    <li><b>Classic BADI:</b> <code>SE18</code> (definition), <code>SE19</code> (implementation), called via <code>CL_EXITHANDLER=&gt;GET_INSTANCE</code>.</li>
+    <li><b>New (kernel) BADI:</b> part of an enhancement spot, called with <code>GET BADI</code> / <code>CALL BADI</code>. Faster, with filters and fallback classes.</li>
+    <li><b>Enhancement framework:</b> implicit enhancement points (start and end of FMs, methods, forms, includes, structures) and explicit <code>ENHANCEMENT-POINT</code> / <code>ENHANCEMENT-SECTION</code>.</li>
+  </ul>
+  <h3>Interview questions</h3>
+  <details class="qa"><summary>How do you find a BADI for a transaction?</summary><div class="a"><ul><li>Set a breakpoint in <code>CL_EXITHANDLER=&gt;GET_INSTANCE</code> (classic BADIs), run the transaction and note the exit names.</li><li>For new BADIs, use a breakpoint on the <code>GET BADI</code> statement, or the debugger's statement breakpoint.</li><li>Run an SQL trace in ST05 on tables <code>SXS_ATTR</code> / <code>BADI_IMPL</code>.</li><li>Search the program's package in SE84 or SE18, or read SAP notes and SPRO documentation.</li></ul></div></details>
+  <details class="qa"><summary>Classic BADI vs kernel BADI?</summary><div class="a"><p>Classic BADIs are instantiated through <code>CL_EXITHANDLER</code>, which is slower, and live outside enhancement spots. Kernel BADIs are integrated into the ABAP kernel (<code>GET BADI</code>/<code>CALL BADI</code>), belong to enhancement spots, support filter values, fallback classes and context, and perform better.</p></div></details>
+  <details class="qa"><summary>What is a multiple-use BADI and a filter-dependent BADI?</summary><div class="a"><p>Multiple-use: several active implementations all run, with no guaranteed order unless sorting is defined. Single-use: only one active implementation. Filter-dependent: implementations are tied to filter values (e.g. country or company code), so only the matching implementation runs.</p></div></details>
+  <details class="qa"><summary>User exit vs customer exit vs BADI?</summary><div class="a"><p>User exits are FORM routines in SAP code. Editing them is a modification, mostly in SD. Customer exits are predefined hooks managed via CMOD that don't need modification, but each is usable in one project only. BADIs are object-oriented, can have multiple implementations and filters, and are the preferred approach today.</p></div></details>
+  <details class="qa"><summary>Enhancement point vs enhancement section?</summary><div class="a"><p>An enhancement point lets you add code at that place, and the original code still runs. An enhancement section replaces the code inside the section with your implementation. Only one active implementation of a section is allowed.</p></div></details>
+  <details class="qa"><summary>How do you add a custom field to a standard screen, e.g. a sales order?</summary><div class="a"><p>Add the field to the table through an append structure (e.g. <code>VBAK</code> via <code>ZAVBAK</code>). Then add it to the screen using the screen exit SAP provides: for sales orders, subscreen 8309 or 8459 in <code>SAPMV45A</code> with modification registration, or a BADI or customer exit screen area elsewhere. Fill and save it through the user exits.</p></div></details>
+</section>
+
+<!-- 11 MIG -->
+<section class="card" id="mig" data-mod>
+  <div class="mhead"><span class="num">11</span><h2 class="mt">BDC and data migration</h2><span class="lvl l2">Core</span><label class="done"><input type="checkbox" data-done="mig" id="d-mig">Done</label></div>
+  <h3>Learn</h3>
+  <ul>
+    <li>BDC: record with <code>SHDB</code>, fill <code>BDCDATA</code> (program, dynpro, dynbegin, fnam, fval).</li>
+    <li>Call Transaction: <code>CALL TRANSACTION 'XK01' USING lt_bdc MODE 'N' UPDATE 'S' MESSAGES INTO lt_msg</code>. Modes: A (all screens), E (errors only), N (no display). Update: S (synchronous), A (asynchronous), L (local).</li>
+    <li>Session method: <code>BDC_OPEN_GROUP</code>, <code>BDC_INSERT</code>, <code>BDC_CLOSE_GROUP</code>. Process in <code>SM35</code>, with a log created automatically.</li>
+    <li>LSMW (legacy tool), BAPIs for loading, and in S/4HANA the <b>Migration Cockpit</b> (<code>LTMC</code>, now the Fiori app "Migrate Your Data", plus <code>LTMOM</code> for object modelling).</li>
+    <li>File handling: <code>GUI_UPLOAD</code>/<code>GUI_DOWNLOAD</code> for the PC, <code>OPEN DATASET</code> for the application server, transaction <code>AL11</code>.</li>
+  </ul>
+  <h3>Interview questions</h3>
+  <details class="qa"><summary>Call transaction vs session method?</summary><div class="a"><p>Call transaction is immediate and faster, supports synchronous or asynchronous update, and returns messages that you must log yourself. Session method creates a batch input session processed later in SM35, always updates synchronously, writes a log automatically and is better for large volumes and error reprocessing.</p></div></details>
+  <details class="qa"><summary>Why prefer a BAPI over BDC?</summary><div class="a"><p>BDC replays screens, so it breaks when screens or field positions change (or in Fiori-only processes), and it is slower. A BAPI is a stable, released API that returns structured messages in a <code>RETURN</code> table and is upgrade-safe. Use BDC only when no BAPI exists.</p></div></details>
+  <details class="qa"><summary>How do you handle table controls in BDC?</summary><div class="a"><p>Fields are indexed by row, e.g. <code>RV45A-MABNR(01)</code>, <code>(02)</code>. You also handle page-down (<code>=P+</code>) when rows exceed the visible lines, and set a default screen size via <code>CTU_PARAMS-DEFSIZE = 'X'</code> so the number of visible rows is the same everywhere.</p></div></details>
+  <details class="qa"><summary>How would you upload a file from the application server in background?</summary><div class="a"><p><code>GUI_UPLOAD</code> doesn't work in background jobs because there is no SAP GUI. Use <code>OPEN DATASET lv_file FOR INPUT IN TEXT MODE ENCODING DEFAULT</code>, <code>READ DATASET</code> in a loop, then <code>CLOSE DATASET</code>. Check <code>sy-subrc</code> after each step.</p></div></details>
+</section>
+
+<!-- 12 LUW -->
+<section class="card" id="luw" data-mod>
+  <div class="mhead"><span class="num">12</span><h2 class="mt">LUW, locks and update techniques</h2><span class="lvl l2">Core</span><label class="done"><input type="checkbox" data-done="luw" id="d-luw">Done</label></div>
+  <h3>Learn</h3>
+  <ul>
+    <li><b>Database LUW:</b> one DB commit, implicitly closed at each screen change or RFC. <b>SAP LUW:</b> a business transaction spanning several screens, bundled until <code>COMMIT WORK</code>.</li>
+    <li>Bundling: <code>CALL FUNCTION ... IN UPDATE TASK</code> and <code>PERFORM ... ON COMMIT</code>. Both run only on <code>COMMIT WORK</code>.</li>
+    <li>Update modules: V1 (time-critical, e.g. posting a document) and V2 (non-critical, e.g. statistics, runs after V1). Monitor in <code>SM13</code>.</li>
+    <li><code>COMMIT WORK AND WAIT</code> for synchronous update, and <code>ROLLBACK WORK</code>.</li>
+  </ul>
+  <h3>Interview questions</h3>
+  <details class="qa"><summary>SAP LUW vs database LUW?</summary><div class="a"><p>A database LUW is the unit the database commits at once, and SAP issues an implicit DB commit at every screen change. An SAP LUW groups all changes of one business transaction across screens. It is achieved by collecting changes with update function modules and executing them together on COMMIT WORK, so either everything is saved or nothing is.</p></div></details>
+  <details class="qa"><summary>COMMIT WORK vs COMMIT WORK AND WAIT?</summary><div class="a"><p>COMMIT WORK triggers the update asynchronously and the program continues at once. AND WAIT waits until the update finishes, which you need if the next step reads the data just written, e.g. after <code>BAPI_TRANSACTION_COMMIT</code> with <code>WAIT = 'X'</code>.</p></div></details>
+  <details class="qa"><summary>Why are SAP locks needed if the database has locks?</summary><div class="a"><p>Database locks last only one DB LUW, which ends at every screen change. An SAP transaction spans several screens, so SAP uses logical locks in the enqueue server (ENQUEUE FMs) to keep a record locked across the whole SAP LUW and stop two users editing the same document.</p></div></details>
+  <details class="qa"><summary>V1 vs V2 update?</summary><div class="a"><p>V1 updates are time-critical, run first in the update work process and can be restarted from SM13 if they fail. V2 updates run after V1 succeeds, are lower priority and are typically used for statistics. If V1 fails, V2 doesn't run.</p></div></details>
+</section>
+
+<!-- 13 INTG -->
+<section class="card" id="intg" data-mod>
+  <div class="mhead"><span class="num">13</span><h2 class="mt">Interfaces: RFC, BAPI, IDoc and ALE</h2><span class="lvl l2">Core</span><label class="done"><input type="checkbox" data-done="intg" id="d-intg">Done</label></div>
+  <p class="jd"><b>JD link:</b> "familiarity with integration techniques and tools within the SAP ecosystem". This is the JD line that maps straight to her IDoc and RFC debugging work.</p>
+  <h3>Learn: RFC</h3>
+  <ul>
+    <li>Destinations in <code>SM59</code>. Types: <b>sRFC</b> (synchronous), <b>aRFC</b> (<code>STARTING NEW TASK</code>, parallel), <b>tRFC</b> (<code>IN BACKGROUND TASK</code>, executed exactly once, monitor in <code>SM58</code>), <b>qRFC</b> (tRFC in order via queues, <code>SMQ1</code>/<code>SMQ2</code>), <b>bgRFC</b> (newer replacement for tRFC and qRFC).</li>
+  </ul>
+  <h3>Learn: BAPI</h3>
+  <ul>
+    <li>An RFC-enabled function module registered as a method of a business object in the BOR (<code>SWO1</code>, browser T-code <code>BAPI</code>).</li>
+    <li>No COMMIT inside the BAPI. The caller calls <code>BAPI_TRANSACTION_COMMIT</code> or <code>BAPI_TRANSACTION_ROLLBACK</code>. Errors come back in the <code>RETURN</code> table (TYPE E/A).</li>
+  </ul>
+  <h3>Learn: IDoc</h3>
+  <ul>
+    <li>Structure: <b>control record</b> (<code>EDIDC</code>: sender, receiver, message type), <b>data records</b> (<code>EDID4</code>: segments) and <b>status records</b> (<code>EDIDS</code>).</li>
+    <li>Building blocks: segment (<code>WE31</code>), basic IDoc type (<code>WE30</code>), extension, message type (<code>WE81</code>), link message type to IDoc type (<code>WE82</code>).</li>
+    <li>Configuration: logical system (<code>BD54</code>, assigned to client in <code>SCC4</code>), RFC destination (<code>SM59</code>), port (<code>WE21</code>), partner profile (<code>WE20</code>), distribution model (<code>BD64</code>).</li>
+    <li>Inbound: function module assigned in <code>WE57</code>, attributes in <code>BD51</code>, process code in <code>WE42</code>.</li>
+    <li>Monitoring and testing: <code>WE02</code>/<code>WE05</code> (display), <code>WE19</code> (test tool), <code>BD87</code> (reprocess), <code>WE09</code> (search by content).</li>
+  </ul>
+  <div class="tw"><table>
+    <thead><tr><th>Status</th><th>Meaning</th></tr></thead>
+    <tbody>
+      <tr><td><code>03</code></td><td>Outbound: data passed to port OK</td></tr>
+      <tr><td><code>02</code> / <code>29</code></td><td>Outbound: error passing to port / error in ALE service</td></tr>
+      <tr><td><code>30</code></td><td>Outbound: IDoc ready for dispatch</td></tr>
+      <tr><td><code>64</code></td><td>Inbound: ready to be passed to application</td></tr>
+      <tr><td><code>51</code></td><td>Inbound: application document not posted (error)</td></tr>
+      <tr><td><code>53</code></td><td>Inbound: application document posted</td></tr>
+    </tbody>
+  </table></div>
+  <h3>Interview questions</h3>
+  <details class="qa"><summary>Explain the end-to-end configuration for an outbound IDoc.</summary><div class="a"><p>Define logical systems (BD54) and assign them to clients (SCC4). Create an RFC destination to the receiver (SM59) and a tRFC port (WE21). Maintain the distribution model with sender, receiver and message type (BD64). Create the outbound partner profile with message type, port, IDoc type and output mode (WE20). Trigger it via change pointers (BD21), output types (NACE) or custom code with <code>MASTER_IDOC_DISTRIBUTE</code>. Monitor in WE02.</p></div></details>
+  <details class="qa"><summary>How do you create a custom IDoc?</summary><div class="a"><p>Create segments in WE31, the basic type in WE30 (segment hierarchy and cardinality), the message type in WE81, and link them in WE82. For outbound, write a program that fills the control and data records and calls <code>MASTER_IDOC_DISTRIBUTE</code>. For inbound, write a function module with the standard interface, register it in WE57 and BD51, create a process code in WE42, and add it to the partner profile.</p></div></details>
+  <details class="qa"><summary>An inbound IDoc is in status 51. What do you do?</summary><div class="a"><p>Read the status message in WE02 to see the application error, such as a missing master data or a locked document. If it's a data issue, fix the master data or edit the IDoc segment in WE02, which creates a backup copy, and reprocess in BD87. If it's a code issue, debug by reprocessing in BD87 with a breakpoint in the inbound FM, or copy the IDoc in WE19 and process inbound in foreground debug mode.</p></div></details>
+  <details class="qa"><summary>What is the difference between a basic type and an extension?</summary><div class="a"><p>A basic type is the IDoc structure (SAP standard or custom). An extension adds custom segments to an existing basic type without changing it. You fill the extra segments in a user exit or BADI of the standard IDoc function module.</p></div></details>
+  <details class="qa"><summary>What are change pointers?</summary><div class="a"><p>A way to send master data IDocs automatically when data changes. Activate them globally in BD61 and per message type in BD50. Changes are logged in <code>BDCP2</code>, and program <code>RBDMIDOC</code> (BD21) creates IDocs from the pointers, usually scheduled as a job.</p></div></details>
+  <details class="qa"><summary>sRFC vs aRFC vs tRFC vs qRFC?</summary><div class="a"><p>sRFC waits for the result. aRFC runs in parallel and collects results with <code>RECEIVE RESULTS</code>. tRFC is asynchronous and guarantees execution exactly once, even if the target is down (retried from SM58). qRFC adds guaranteed order through queues. bgRFC is the modern successor to tRFC and qRFC.</p></div></details>
+  <details class="qa"><summary>BAPI vs normal RFC function module?</summary><div class="a"><p>Every BAPI is an RFC function module, but it is also a method of a BOR business object. It follows naming and interface standards, returns errors in a RETURN table instead of raising exceptions, doesn't commit itself, and is released and stable across releases.</p></div></details>
+</section>
+
+<!-- 14 ODATA -->
+<section class="card" id="odata" data-mod>
+  <div class="mhead"><span class="num">14</span><h2 class="mt">OData and SAP Gateway</h2><span class="lvl l2">Core</span><label class="done"><input type="checkbox" data-done="odata" id="d-odata">Done</label></div>
+  <h3>Learn</h3>
+  <ul>
+    <li>OData is a REST protocol used by Fiori apps and external systems. Service builder: <code>SEGW</code>.</li>
+    <li>Model: entity types, entity sets, associations, navigation properties. Generated classes: <code>MPC</code>/<code>MPC_EXT</code> (model) and <code>DPC</code>/<code>DPC_EXT</code> (data provider, where you code).</li>
+    <li>CRUD methods: <code>GET_ENTITYSET</code>, <code>GET_ENTITY</code>, <code>CREATE_ENTITY</code>, <code>UPDATE_ENTITY</code>, <code>DELETE_ENTITY</code>, plus <code>CREATE_DEEP_ENTITY</code> and function imports.</li>
+    <li>Register in <code>/IWFND/MAINT_SERVICE</code>, test in <code>/IWFND/GW_CLIENT</code>, check errors in <code>/IWFND/ERROR_LOG</code> and <code>/IWBEP/ERROR_LOG</code>.</li>
+    <li>Query options: <code>$filter $select $expand $top $skip $orderby $count $format=json</code>, and <code>$batch</code>.</li>
+  </ul>
+  <h3>Interview questions</h3>
+  <details class="qa"><summary>Why code in DPC_EXT and not DPC?</summary><div class="a"><p>DPC is regenerated every time the model changes in SEGW, so code there would be lost. DPC_EXT inherits from DPC and is never regenerated. You redefine methods there.</p></div></details>
+  <details class="qa"><summary>How do you handle $filter in GET_ENTITYSET?</summary><div class="a"><p>Use <code>io_tech_request_context-&gt;get_filter( )-&gt;get_filter_select_options( )</code> to get select-option ranges per property, or the filter string via <code>get_filter_string( )</code>, and use them in your SELECT. Paging uses <code>is_paging-top</code> and <code>skip</code>.</p></div></details>
+  <details class="qa"><summary>What is a deep entity?</summary><div class="a"><p>A create request that posts a header with its items in one call, e.g. a sales order with lines. You define a deep structure in MPC_EXT and redefine <code>CREATE_DEEP_ENTITY</code> in DPC_EXT.</p></div></details>
+  <details class="qa"><summary>SEGW vs CDS-based OData?</summary><div class="a"><p>SEGW is the classic, code-heavy way. In S/4HANA you can expose CDS views via service definition and binding (RAP), or the older <code>@OData.publish: true</code> annotation, with much less code. RAP is SAP's recommended model for new services.</p></div></details>
+</section>
+
+<!-- 15 WF -->
+<section class="card" id="wf" data-mod>
+  <div class="mhead"><span class="num">15</span><h2 class="mt">SAP Workflow</h2><span class="lvl l2">Core</span><label class="done"><input type="checkbox" data-done="wf" id="d-wf">Done</label></div>
+  <p class="jd"><b>Her edge:</b> she leads workflow development at Cognizant, so interviewers will probe deeply here. She should prepare one workflow from her project to walk through on a whiteboard.</p>
+  <h3>Learn</h3>
+  <ul>
+    <li>Building blocks: business objects (BOR, <code>SWO1</code>) or ABAP classes implementing <code>IF_WORKFLOW</code>. Standard tasks (<code>TS</code>, <code>PFTC</code>), workflow templates (<code>WS</code>), Workflow Builder (<code>SWDD</code>).</li>
+    <li>Step types: activity, user decision, condition, multiple condition, loop, fork, wait for event, container operation, send mail.</li>
+    <li>Containers and bindings: event → workflow, workflow → task, task → method.</li>
+    <li>Agent determination: possible agents (task), responsible agents (rules via <code>PFAC</code>, org units, expressions), excluded agents.</li>
+    <li>Triggering: events raised by change documents, status management, message control, or code (<code>SAP_WAPI_CREATE_EVENT</code>, <code>CL_SWF_EVT_EVENT=&gt;RAISE</code>). Event linkage in <code>SWE2</code>.</li>
+    <li>Deadlines (requested start, latest end), escalation, substitution.</li>
+    <li>Admin: <code>SWU3</code> (setup), <code>SBWP</code> (inbox), <code>SWI1</code> (work items), <code>SWIA</code> (admin), <code>SWEL</code>/<code>SWELS</code> (event trace), <code>SWI5</code> (by org object), <code>SWPR</code> (restart after error).</li>
+  </ul>
+  <h3>Interview questions</h3>
+  <details class="qa"><summary>Walk me through building a purchase-requisition approval workflow.</summary><div class="a"><p>Identify the triggering event (e.g. <code>BUS2105.RELEASESTEPCREATED</code> or a custom class event). Create a workflow template in SWDD with the event as start condition and bind the PR key into the workflow container. Add a user decision step (approve or reject) with agents from a rule (PFAC, e.g. cost-centre manager from a Z table). Branch on the outcome: approve calls a task that releases the PR, reject notifies the requester. Add a deadline with escalation to the manager's manager. Activate the event linkage in SWE2, test with SWUE or by creating a PR, and trace in SWEL.</p></div></details>
+  <details class="qa"><summary>BOR object vs ABAP class in workflow?</summary><div class="a"><p>BOR (SWO1) is the older, macro-based approach. Classes implementing <code>IF_WORKFLOW</code> (with <code>BI_PERSISTENT~FIND_BY_LPOR</code> and <code>LPOR</code>) are object-oriented, easier to debug and test, and preferred for new development.</p></div></details>
+  <details class="qa"><summary>A workflow didn't start. How do you troubleshoot?</summary><div class="a"><p>Turn on the event trace (SWELS) and reproduce. Check SWEL: was the event raised? Was a receiver found? Check event linkage in SWE2 (active? check function blocking it? any errors?). Check the workflow is activated and that SWU3 basic setup is green. If it started but is stuck, look at SWI1 or SWIA for the work item status and error log, and restart with SWPR after fixing.</p></div></details>
+  <details class="qa"><summary>How is agent determination done?</summary><div class="a"><p>The task's possible agents define who is allowed (or set as general task). The step's responsible agents narrow it down, using a rule (PFAC) backed by a function module or Z table, an org object (position, org unit), or an expression from the container. The final recipients are the intersection, minus excluded agents.</p></div></details>
+  <details class="qa"><summary>What are bindings?</summary><div class="a"><p>Data flow mappings between containers: event container to workflow container (at start), workflow container to task container (when a step runs), task container to method parameters, and back. Missing or wrong bindings are a common cause of empty values in steps.</p></div></details>
+  <details class="qa"><summary>How do you debug a background workflow step?</summary><div class="a"><p>Background steps run as user <code>WF-BATCH</code>. Set an external breakpoint for that user in the method, or temporarily make the step a dialog step assigned to yourself. Alternatively, execute the method directly in SWO1 or the class test in SE24 with test data.</p></div></details>
+</section>
+
+<!-- 16 HANA -->
+<section class="card" id="hana" data-mod>
+  <div class="mhead"><span class="num">16</span><h2 class="mt">ABAP on HANA</h2><span class="lvl l3">Advanced</span><label class="done"><input type="checkbox" data-done="hana" id="d-hana">Done</label></div>
+  <p class="jd"><b>JD link:</b> "Good to have: SAP ABAP Development for HANA". This is the module that moves her from "meets" to "strong" for this role.</p>
+  <h3>Learn</h3>
+  <ul>
+    <li><b>Code pushdown:</b> move data-intensive logic to the database ("code to data") instead of fetching data into ABAP.</li>
+    <li>Tools: ABAP Development Tools (ADT) in Eclipse. CDS and AMDP can only be written there.</li>
+    <li><b>CDS views:</b> <code>define view entity</code> (modern) vs <code>define view</code> (older, needs <code>@AbapCatalog.sqlViewName</code>). Annotations, associations (lazy joins), parameters, calculated fields, <code>CASE</code>, aggregations, unions.</li>
+    <li>Access control (DCL, <code>define role</code>) for row-level authorization.</li>
+    <li><b>CDS table functions</b> and <b>AMDP</b> (ABAP Managed Database Procedures written in SQLScript).</li>
+    <li>S/4HANA data model changes: <code>ACDOCA</code> (Universal Journal), <code>MATDOC</code> (material documents), Business Partner replacing separate customer and vendor maintenance, 40-character material number, aggregate tables removed (replaced by compatibility views).</li>
+    <li>Custom code migration: ATC with S/4HANA readiness checks, Simplification Item catalog, SQL Monitor (<code>SQLM</code>), <code>SWLT</code>.</li>
+  </ul>
+<pre><code>@AccessControl.authorizationCheck: #CHECK
+@EndUserText.label: 'Sales order with customer'
+define view entity ZI_SalesOrder
+  as select from vbak
+  association [0..1] to kna1 as _Customer on $projection.SoldTo = _Customer.kunnr
+{
+  key vbeln as SalesOrder,
+      erdat as CreatedOn,
+      kunnr as SoldTo,
+      @Semantics.amount.currencyCode: 'Currency'
+      netwr as NetValue,
+      waerk as Currency,
+      case when netwr &gt; 100000 then 'HIGH' else 'NORMAL' end as Priority,
+      _Customer
+}</code></pre>
+<pre><code><span class="c">" AMDP method</span>
+CLASS zcl_sales_amdp DEFINITION PUBLIC.
+  PUBLIC SECTION.
+    INTERFACES if_amdp_marker_hdb.
+    TYPES tt_tot TYPE STANDARD TABLE OF zs_cust_total WITH EMPTY KEY.
+    METHODS get_totals IMPORTING VALUE(iv_mandt) TYPE mandt
+                       EXPORTING VALUE(et_tot)   TYPE tt_tot.
+ENDCLASS.
+CLASS zcl_sales_amdp IMPLEMENTATION.
+  METHOD get_totals BY DATABASE PROCEDURE FOR HDB LANGUAGE SQLSCRIPT
+                    OPTIONS READ-ONLY USING vbak.
+    et_tot = SELECT kunnr, SUM( netwr ) AS total
+               FROM vbak WHERE mandt = :iv_mandt GROUP BY kunnr;
+  ENDMETHOD.
+ENDCLASS.</code></pre>
+  <h3>Interview questions</h3>
+  <details class="qa"><summary>What is code pushdown and how do you achieve it?</summary><div class="a"><p>Executing calculations, aggregations and filtering in HANA instead of the application server, so less data travels and HANA's in-memory column store does the heavy work. In order of preference: modern Open SQL (joins, aggregates, CASE, expressions), then CDS views, then AMDP or CDS table functions for logic that SQL alone can't express.</p></div></details>
+  <details class="qa"><summary>CDS view vs AMDP: when do you use which?</summary><div class="a"><p>A CDS view is declarative, reusable, can be consumed by Open SQL, OData and analytics, and supports annotations and DCL authorization. Use it by default. AMDP is imperative SQLScript for complex logic: multiple steps, temporary results, HANA-specific functions. It is HANA-only and harder to maintain. A CDS table function wraps an AMDP so it can be used like a CDS view.</p></div></details>
+  <details class="qa"><summary>Association vs join in CDS?</summary><div class="a"><p>A join is always executed. An association is a declared relationship that becomes a join only when a consumer actually uses a field from it (path expression like <code>_Customer.name1</code>). That keeps views lean, and associations can be exposed for navigation in OData.</p></div></details>
+  <details class="qa"><summary>What's the difference between define view and define view entity?</summary><div class="a"><p>The older <code>define view</code> creates an extra DDIC SQL view (needs <code>sqlViewName</code>) and has looser syntax checks. <code>define view entity</code> (from 7.55) has no extra SQL view, activates faster, has stricter checks and is the recommended form.</p></div></details>
+  <details class="qa"><summary>What changes in custom code when moving from ECC to S/4HANA?</summary><div class="a"><p>Code reading removed or changed tables (e.g. <code>BSEG</code> aggregates, <code>MKPF/MSEG</code> now via <code>MATDOC</code>), using customer and vendor tables directly instead of Business Partner, assuming an 18-character material number, relying on implicit sort order (HANA returns no guaranteed order without <code>ORDER BY</code>), and native SQL for the old database. Find them with ATC S/4HANA readiness checks and fix them, prioritised by usage data from SQLM or UPL.</p></div></details>
+  <details class="qa"><summary>Why does SELECT without ORDER BY behave differently on HANA?</summary><div class="a"><p>On older databases, results often came back in primary-key order by accident. HANA gives no guaranteed order. Code that relied on that (e.g. <code>READ TABLE ... BINARY SEARCH</code> without SORT, or <code>DELETE ADJACENT DUPLICATES</code> without SORT) can silently break. Add <code>ORDER BY PRIMARY KEY</code> or an explicit SORT.</p></div></details>
+</section>
+
+<!-- 17 RAP -->
+<section class="card" id="rap" data-mod>
+  <div class="mhead"><span class="num">17</span><h2 class="mt">RAP and ABAP Cloud</h2><span class="lvl l3">Advanced</span><label class="done"><input type="checkbox" data-done="rap" id="d-rap">Done</label></div>
+  <p class="jd"><b>Her edge:</b> she holds the SAP Back-End Developer – ABAP Cloud certification. If she mentions it, they will ask about RAP. She should be ready for at least the questions below.</p>
+  <h3>Learn</h3>
+  <ul>
+    <li><b>RAP layers:</b> CDS data model (interface views <code>ZI_</code>, root and child entities) → projection (<code>ZC_</code>) → behavior definition (BDEF) → behavior implementation (behavior pool <code>ZBP_</code>) → service definition → service binding (OData V2 or V4, UI or Web API).</li>
+    <li>Implementation types: <b>managed</b> (framework handles CRUD and saving), <b>unmanaged</b> (you code it, e.g. to wrap legacy BAPIs), managed with unmanaged save.</li>
+    <li>Behavior: create, update, delete, <b>determinations</b> (calculate values), <b>validations</b> (check on save), <b>actions</b> (custom operations like "Approve"), feature control, ETag, locking, <b>draft</b>.</li>
+    <li><b>EML</b> (Entity Manipulation Language): <code>READ ENTITIES</code>, <code>MODIFY ENTITIES</code>, <code>COMMIT ENTITIES</code>.</li>
+    <li><b>ABAP Cloud:</b> restricted ABAP language version, use only released APIs (C1 contract), no direct access to SAP tables or classic UI. Supports a <b>clean core</b>, so upgrades don't break custom code.</li>
+  </ul>
+<pre><code>managed implementation in class zbp_i_travel unique;
+strict ( 2 );
+define behavior for ZI_Travel alias Travel
+persistent table ztravel
+lock master
+authorization master ( instance )
+etag master LastChangedAt
+{
+  create; update; delete;
+  field ( readonly ) TravelId;
+  determination setStatus on modify { create; }
+  validation validateDates on save { field BeginDate, EndDate; }
+  action acceptTravel result [1] $self;
+}</code></pre>
+  <h3>Interview questions</h3>
+  <details class="qa"><summary>What is RAP and what are its main artifacts?</summary><div class="a"><p>The ABAP RESTful Application Programming Model, SAP's standard way to build Fiori apps and OData APIs in S/4HANA and BTP. Artifacts: CDS data model and projection views, behavior definition, behavior pool class, service definition (what to expose) and service binding (protocol and type). Preview the app via Fiori elements from the binding.</p></div></details>
+  <details class="qa"><summary>Managed vs unmanaged RAP?</summary><div class="a"><p>Managed: the framework handles create, update, delete, locking and saving to your tables, and you add determinations, validations and actions. Unmanaged: you implement every operation and the save sequence yourself. Used when reusing existing logic, such as a legacy BAPI or function module that owns the data.</p></div></details>
+  <details class="qa"><summary>Determination vs validation vs action?</summary><div class="a"><p>A determination computes or changes values automatically on modify or save (e.g. set status to "Open" on create). A validation checks data, usually on save, and rejects it with messages (e.g. end date before begin date). An action is an explicit operation the user or API triggers (e.g. "Accept Travel"), shown as a button in Fiori.</p></div></details>
+  <details class="qa"><summary>What is draft in RAP?</summary><div class="a"><p>Draft lets users save work in progress without validation and continue later or on another device. RAP keeps a draft table alongside the active table and handles edit, activate and discard. It is enabled with <code>with draft;</code> in the BDEF.</p></div></details>
+  <details class="qa"><summary>What does "clean core" mean for an ABAP developer?</summary><div class="a"><p>Extend S/4HANA without modifying SAP objects and using only released, stable APIs, so upgrades don't break custom code. In practice that means ABAP Cloud, RAP, released CDS views and BAdIs, and side-by-side extensions on BTP, rather than modifications, direct table access or unreleased function modules.</p></div></details>
+</section>
+
+<!-- 18 PERF -->
+<section class="card" id="perf" data-mod>
+  <div class="mhead"><span class="num">18</span><h2 class="mt">Debugging and performance tuning</h2><span class="lvl l3">Advanced</span><label class="done"><input type="checkbox" data-done="perf" id="d-perf">Done</label></div>
+  <p class="jd"><b>JD link:</b> "experience with debugging and performance tuning of applications", which is listed word for word in the JD. Expect a scenario question here.</p>
+  <h3>Learn: debugging</h3>
+  <ul>
+    <li>Start: <code>/h</code>, <code>BREAK-POINT</code>, session breakpoints, external (user) breakpoints for RFC, HTTP, OData and background users.</li>
+    <li>Watchpoints (stop when a variable changes), breakpoint at statement or method or exception, layer debugging.</li>
+    <li>Update debugging and system debugging (Settings in the debugger).</li>
+    <li>Background jobs: SM37 → select job → <code>JDBG</code> in the command field. Or SM50 → Administration → Debug for a running process.</li>
+    <li>Popup screens (no command field): drag in a small text file with <code>[FUNCTION] Command=/H Title=Debugger Type=SystemCommand</code>.</li>
+  </ul>
+  <h3>Learn: analysis tools</h3>
+  <div class="tw"><table>
+    <thead><tr><th>Tool</th><th>Use</th></tr></thead>
+    <tbody>
+      <tr><td><code>ST05</code></td><td>SQL trace: slow and identical (duplicate) selects, missing indexes, buffer use</td></tr>
+      <tr><td><code>SAT</code></td><td>Runtime analysis: where time goes, ABAP vs DB, hit list (replaced SE30)</td></tr>
+      <tr><td><code>ST12</code></td><td>Combined ABAP and SQL trace</td></tr>
+      <tr><td><code>ST22</code></td><td>Short dumps with source position and variables</td></tr>
+      <tr><td><code>SCI</code> / <code>ATC</code></td><td>Static code checks: performance, security, S/4 readiness</td></tr>
+      <tr><td><code>SQLM</code> / <code>SWLT</code></td><td>Production SQL monitor and worklist for HANA optimisation</td></tr>
+      <tr><td><code>SM50</code> / <code>SM66</code> / <code>SM21</code> / <code>SM12</code> / <code>SM13</code></td><td>Work processes, global processes, system log, locks, updates</td></tr>
+    </tbody>
+  </table></div>
+  <h3>Interview questions</h3>
+  <details class="qa"><summary>A report that used to run in 2 minutes now takes 40. How do you approach it?</summary><div class="a"><p>Reproduce with the same selection and check SM50 while it runs to see whether it's stuck in DB or ABAP. Run SAT for the ABAP vs DB split, then ST05 for the worst statements. Typical fixes: remove SELECTs inside loops, replace SELECT * with a field list, add WHERE conditions that match an index, use joins or FOR ALL ENTRIES with a non-empty driver table, switch lookups to hashed or sorted tables, replace nested loops with parallel cursor, and use field symbols. Then confirm the gain with the same trace and explain what changed and why data growth exposed it.</p></div></details>
+  <details class="qa"><summary>List your ABAP performance best practices.</summary><div class="a"><ul><li>Select only the fields and rows you need, and never SELECT in a loop.</li><li>Use index-friendly WHERE clauses, joins, and code pushdown on HANA.</li><li>Check the FAE driver table and remove its duplicates.</li><li>Use sorted or hashed tables or BINARY SEARCH, field symbols, and parallel cursor.</li><li>Use buffering for small customizing tables.</li><li>Use <code>PACKAGE SIZE</code> for huge volumes, and parallel processing (aRFC, <code>SPTA</code>) when appropriate.</li><li>Run ATC before release.</li></ul></div></details>
+  <details class="qa"><summary>How do you debug an RFC or OData call coming from another system?</summary><div class="a"><p>Set an external (user) breakpoint in your code for the user the call runs as, the communication or RFC user. Settings → Debugger → set user. Then trigger the call. For OData you can also replay the request in <code>/IWFND/GW_CLIENT</code> with your own user.</p></div></details>
+  <details class="qa"><summary>What is a watchpoint?</summary><div class="a"><p>A debugger setting that stops execution when a variable's value changes, or meets a condition. It is useful for finding where in a large program a field gets overwritten.</p></div></details>
+  <details class="qa"><summary>How do you analyse a short dump?</summary><div class="a"><p>Open it in ST22: read the error type (e.g. <code>TIME_OUT</code>, <code>TSV_TNEW_PAGE_ALLOC_FAILED</code> for memory, <code>CX_SY_ZERODIVIDE</code>, <code>ITAB_DUPLICATE_KEY</code>), what happened, the source code extract at the failing line, the call stack and variable values. From there, reproduce in debug and fix the root cause, not only the symptom.</p></div></details>
+</section>
+
+<!-- 19 HR -->
+<section class="card" id="hr" data-mod>
+  <div class="mhead"><span class="num">19</span><h2 class="mt">Project story and HR round</h2><span class="lvl l3">Interview day</span><label class="done"><input type="checkbox" data-done="hr" id="d-hr">Done</label></div>
+  <p class="jd"><b>Note:</b> Accenture's experienced-hire process usually has one or two technical rounds and a managerial or HR discussion. The exact steps vary by team, so she should confirm them with her recruiter.</p>
+  <h3>Her 2-minute introduction (template)</h3>
+  <p>"I'm Apoorva, an SAP ABAP engineer with over three years at Cognizant, working on S/4HANA for Sanofi. I joined as a trainee in May 2023, became a Programmer Analyst in 2024 and was promoted to Associate in March 2026. My core work is RICEFW development: reports, interfaces with IDocs and RFCs, enhancements with BAdIs, forms and especially SAP Workflow, which I now lead for my team. I also review code and mentor new joiners. Recently I earned the SAP Back-End Developer – ABAP Cloud and SAP Generative AI Developer certifications, because I want to grow in S/4HANA, RAP and clean-core development. That's why this Accenture role in Hyderabad interests me."</p>
+  <h3>Prepare 4 STAR stories from her own work</h3>
+  <ul>
+    <li><b>A workflow she built:</b> the business problem, trigger event, agents, steps, how she tested it, and the result (approval time saved, manual steps removed). Use her real numbers.</li>
+    <li><b>A tough production issue:</b> an IDoc failure, a dump or a slow report. How she found the root cause, the tools used and the fix.</li>
+    <li><b>An enhancement:</b> the BAdI or exit chosen, why that one, and how she kept it upgrade-safe.</li>
+    <li><b>Leadership:</b> mentoring a new joiner or improving the team's coding standards and code reviews.</li>
+  </ul>
+  <p class="tip">She should fill these in with her own real details and figures before the interview. Interviewers will ask follow-ups on anything she claims.</p>
+  <h3>Interview questions</h3>
+  <details class="qa"><summary>Explain your current project.</summary><div class="a"><p>Structure it as: client and domain (Sanofi, pharma, S/4HANA), her role and team size, the modules she supports, the types of objects she builds (with one example per RICEFW type), the tools and process (transports, code reviews, ticketing), and one result she is proud of. Keep it to about 2 minutes, then let them dig in.</p></div></details>
+  <details class="qa"><summary>Why are you leaving Cognizant after a recent promotion?</summary><div class="a"><p>Keep it positive and forward-looking: she wants broader exposure to more clients and S/4HANA transformation work, ABAP on HANA and RAP. Accenture's scale gives that. Avoid criticising the current employer.</p></div></details>
+  <details class="qa"><summary>Why Accenture?</summary><div class="a"><p>Breadth of SAP S/4HANA programmes across industries, strong learning and certification culture (which matches her recent certifications), and the chance to work on clean-core and cloud ABAP projects. She should mention something specific she has read about Accenture's SAP practice.</p></div></details>
+  <details class="qa"><summary>Where do you see yourself in 3 years?</summary><div class="a"><p>As a senior ABAP or technical lead who designs S/4HANA solutions end to end, including RAP, CDS and integration, and mentors a team. This connects to the JD line "expected to perform independently and become an SME".</p></div></details>
+  <details class="qa"><summary>Questions she can ask the panel</summary><div class="a"><ul><li>What projects is this team working on now: implementation, upgrade or support?</li><li>How much of the work is on S/4HANA and ABAP on HANA versus ECC?</li><li>How does the team use RAP and clean-core practices today?</li><li>What would success look like for this role in the first six months?</li></ul></div></details>
+</section>
+
+<!-- TCODES -->
+<section class="card" id="tcodes">
+  <div class="mhead"><h2 class="mt">T-code cheat sheet</h2></div>
+  <div class="tw"><table>
+    <thead><tr><th>Area</th><th>T-codes</th></tr></thead>
+    <tbody>
+      <tr><td>Development</td><td><code>SE38</code> programs, <code>SE37</code> FMs, <code>SE24</code> classes, <code>SE80</code> object navigator, <code>SE11</code> dictionary, <code>SE93</code> transactions, <code>SE91</code> messages, <code>SE84</code> repository info</td></tr>
+      <tr><td>Transport</td><td><code>SE09</code> / <code>SE10</code>, <code>SE01</code>, <code>STMS</code></td></tr>
+      <tr><td>Enhancements</td><td><code>SE18</code>, <code>SE19</code>, <code>SMOD</code>, <code>CMOD</code>, <code>SE20</code> enhancement spots</td></tr>
+      <tr><td>Forms</td><td><code>SE71</code>, <code>SE72</code>, <code>SMARTFORMS</code>, <code>SMARTSTYLES</code>, <code>SFP</code>, <code>SO10</code>, <code>NACE</code></td></tr>
+      <tr><td>Migration</td><td><code>SHDB</code>, <code>SM35</code>, <code>LSMW</code>, <code>LTMC</code>, <code>LTMOM</code>, <code>AL11</code></td></tr>
+      <tr><td>Interfaces</td><td><code>SM59</code>, <code>SM58</code>, <code>SMQ1</code>/<code>SMQ2</code>, <code>WE02</code>, <code>WE05</code>, <code>WE19</code>, <code>WE20</code>, <code>WE21</code>, <code>WE30</code>, <code>WE31</code>, <code>WE81</code>, <code>WE82</code>, <code>WE57</code>, <code>WE42</code>, <code>BD54</code>, <code>BD64</code>, <code>BD87</code>, <code>BD21</code>, <code>BD50</code>, <code>BD61</code>, <code>BAPI</code></td></tr>
+      <tr><td>OData</td><td><code>SEGW</code>, <code>/IWFND/MAINT_SERVICE</code>, <code>/IWFND/GW_CLIENT</code>, <code>/IWFND/ERROR_LOG</code></td></tr>
+      <tr><td>Workflow</td><td><code>SWDD</code>, <code>PFTC</code>, <code>SWO1</code>, <code>SWE2</code>, <code>SWEL</code>, <code>SWELS</code>, <code>SWI1</code>, <code>SWIA</code>, <code>SWPR</code>, <code>SWU3</code>, <code>SBWP</code>, <code>PFAC</code></td></tr>
+      <tr><td>Performance and support</td><td><code>ST05</code>, <code>SAT</code>, <code>ST12</code>, <code>ST22</code>, <code>SCI</code>, <code>ATC</code>, <code>SQLM</code>, <code>SM50</code>, <code>SM66</code>, <code>SM21</code>, <code>SM12</code>, <code>SM13</code>, <code>SM36</code>, <code>SM37</code></td></tr>
+    </tbody>
+  </table></div>
+</section>
+
+<footer>Prepared for Apoorva Nalam · Accenture ATCI-5001506-S1865981 · Progress is saved in this browser only.</footer>
+</main>
+</div>
+</div>
+
+<script>
+(function(){
+  var KEY='abapPrepDone';
+  var state={};
+  try{state=JSON.parse(localStorage.getItem(KEY)||'{}')||{};}catch(e){state={};}
+  var boxes=[].slice.call(document.querySelectorAll('input[data-done]'));
+  function save(){try{localStorage.setItem(KEY,JSON.stringify(state));}catch(e){}}
+  function render(){
+    var done=0;
+    boxes.forEach(function(b){
+      var id=b.getAttribute('data-done');
+      b.checked=!!state[id]; if(state[id])done++;
+      var li=document.querySelector('li[data-for="'+id+'"]');
+      if(li)li.classList.toggle('done',!!state[id]);
+    });
+    document.getElementById('pdone').textContent=done;
+    document.getElementById('ptotal').textContent=boxes.length;
+    document.getElementById('pbar').style.width=(boxes.length?done/boxes.length*100:0)+'%';
+  }
+  boxes.forEach(function(b){b.addEventListener('change',function(){state[b.getAttribute('data-done')]=b.checked;save();render();});});
+  render();
+
+  var qas=[].slice.call(document.querySelectorAll('details.qa'));
+  var count=document.getElementById('count');
+  function setCount(n){count.textContent=n+' question'+(n===1?'':'s');}
+  setCount(qas.length);
+  document.getElementById('expand').onclick=function(){qas.forEach(function(d){if(!d.classList.contains('hide'))d.open=true;});};
+  document.getElementById('collapse').onclick=function(){qas.forEach(function(d){d.open=false;});};
+
+  var q=document.getElementById('q');
+  var cards=[].slice.call(document.querySelectorAll('section.card'));
+  q.addEventListener('input',function(){
+    var t=q.value.trim().toLowerCase(), n=0;
+    cards.forEach(function(c){
+      if(!t){c.classList.remove('hide');return;}
+      var cq=[].slice.call(c.querySelectorAll('details.qa')), any=false;
+      var headHit=(c.querySelector('h2')||{textContent:''}).textContent.toLowerCase().indexOf(t)>-1;
+      cq.forEach(function(d){var hit=headHit||d.textContent.toLowerCase().indexOf(t)>-1;d.classList.toggle('hide',!hit);if(hit){any=true;}});
+      var bodyHit=c.textContent.toLowerCase().indexOf(t)>-1;
+      c.classList.toggle('hide',!(any||bodyHit));
+    });
+    qas.forEach(function(d){if(!d.classList.contains('hide')&&!d.closest('section').classList.contains('hide'))n++;});
+    if(!t)qas.forEach(function(d){d.classList.remove('hide');});
+    setCount(t?n:qas.length);
+  });
+
+  var rail=document.getElementById('rail'),tg=document.getElementById('navtoggle');
+  tg.addEventListener('click',function(){var o=rail.classList.toggle('open');tg.setAttribute('aria-expanded',o);});
+  [].slice.call(rail.querySelectorAll('a')).forEach(function(a){a.addEventListener('click',function(){rail.classList.remove('open');tg.setAttribute('aria-expanded','false');});});
+})();
+</script>
+</body>
+</html>
